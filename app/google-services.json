@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378249598626",
+    "project_id": "readme-5560c",
+    "storage_bucket": "readme-5560c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378249598626:android:de433a5a148616088fa9fb",
+        "android_client_info": {
+          "package_name": "com.example.readme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLjHmhRpoZB2FkE7Y_XotyQQXVdAi5k3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
