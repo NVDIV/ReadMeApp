@@ -2,7 +2,6 @@ package com.example.readme.presentation.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,13 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,13 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.readme.R
+import com.example.readme.presentation.components.ActionButton
 import com.example.readme.presentation.components.DrawerContent
+import com.example.readme.presentation.components.TextMessage
 import com.example.readme.presentation.components.TopBar
 import kotlinx.coroutines.launch
 
@@ -89,16 +83,10 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = buildAnnotatedString {
-                    append("Hello, ")
-                    withStyle(style = SpanStyle(color = Color(0xFF676CC3))) {
-                        append("user")
-                    }
-                    append("! Welcome to ReadMe!")
-                },
-                fontSize = 18.sp,
-                color = textColor
+            TextMessage(
+                message = "Hello, user! Welcome to Readme",
+                highlights = listOf("user"),
+                textColor = textColor
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -111,29 +99,9 @@ fun ScreenContent(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(50.dp))
             }
 
-            Button(
-                modifier = Modifier.width(150.dp),
-                onClick = { /* TODO: Add Start Lesson action */ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF7F85ED),
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Start Lesson")
-            }
-
+            ActionButton(text = "Start Lesson", onClick = { /* TODO */ })
             Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                modifier = Modifier.width(150.dp),
-                onClick = { /* TODO: Add Read Text action */ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF7F85ED),
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = "Read Text")
-            }
+            ActionButton(text = "Read Text", onClick = { /* TODO */ })
         }
     }
 }
