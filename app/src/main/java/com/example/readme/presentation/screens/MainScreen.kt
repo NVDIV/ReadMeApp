@@ -9,13 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,53 +16,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.readme.R
 import com.example.readme.presentation.components.ActionButton
-import com.example.readme.presentation.components.DrawerContent
-import com.example.readme.presentation.components.TextMessage
-import com.example.readme.presentation.components.TopBar
-import kotlinx.coroutines.launch
+import com.example.readme.presentation.components.DrawerLayout
+import com.example.readme.viewmodels.MainViewModel
 
 @Composable
-fun MainScreen(modifier: Modifier) {
-    val drawerState = rememberDrawerState(
-        initialValue = DrawerValue.Closed
-    )
-    val scope = rememberCoroutineScope()
-
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            ModalDrawerSheet(
-                modifier = Modifier.width(250.dp),
-                drawerContainerColor = Color(0xFF7F85ED)
-            ) {
-                DrawerContent()
-            }
-        }
-    ) {
-        Scaffold(
-            topBar = {
-                TopBar(
-                    onOpenDrawer = {
-                        scope.launch {
-                            drawerState.apply {
-                                if (isClosed) open() else close()
-                            }
-                        }
-                    }
-                )
-            }
-        ) { padding ->
-            ScreenContent(modifier = Modifier.padding(padding))
-        }
+fun MainScreen(
+    navController: NavHostController,
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    DrawerLayout(navController) { modifier ->
+        MainScreenContent(modifier) // Pass padding modifier
     }
 }
 
-
-
 @Composable
-fun ScreenContent(modifier: Modifier = Modifier) {
+fun MainScreenContent(modifier: Modifier = Modifier) {
     val isDarkTheme = isSystemInDarkTheme()
     val textColor = if (isDarkTheme) Color.White else Color.Black
     val configuration = LocalConfiguration.current
@@ -83,11 +46,11 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            TextMessage(
-                message = "Hello, user! Welcome to Readme",
-                highlights = listOf("user"),
-                textColor = textColor
-            )
+//            TextMessage(
+//                message = "Hello, $userName! Welcome to Readme",
+//                highlights = listOf(userName),
+//                textColor = textColor
+//            )
 
             Spacer(modifier = Modifier.height(50.dp))
 

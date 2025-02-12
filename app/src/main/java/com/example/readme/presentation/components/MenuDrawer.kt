@@ -26,7 +26,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.readme.presentation.navigation.Screen
 import kotlinx.coroutines.launch
+
+@Composable
+fun DrawerLayout(
+    navController: NavHostController,
+    content: @Composable (Modifier) -> Unit // Pass padding modifier
+) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                modifier = Modifier.width(250.dp),
+                drawerContainerColor = Color(0xFF7F85ED)
+            ) {
+                DrawerContent(navController)
+            }
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    onOpenDrawer = {
+                        scope.launch {
+                            if (drawerState.isClosed) drawerState.open() else drawerState.close()
+                        }
+                    }
+                )
+            }
+        ) { padding ->
+            content(Modifier.padding(padding)) // Pass padding to screen content
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +99,7 @@ fun TopBar(
 }
 
 @Composable
-fun DrawerContent(modifier: Modifier = Modifier) {
+fun DrawerContent(navController: NavHostController) {
     Text(
         modifier = Modifier.padding(10.dp),
         text = "ReadMe",
@@ -74,78 +111,46 @@ fun DrawerContent(modifier: Modifier = Modifier) {
     Spacer(modifier = Modifier.height(8.dp))
 
     NavigationDrawerItem(
-        label = {
-            Text(
-                text = "Profile",
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp,
-            )
-        },
+        label = { Text("Main", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White) },
         selected = false,
-        onClick = {},
-        colors = NavigationDrawerItemDefaults.colors(
-            unselectedContainerColor = Color(0xFF7F85ED),
-            selectedContainerColor = Color(0xFF7F85ED)
-        )
+        onClick = { navController.navigate(Screen.Main.route) },
+        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color(0xFF7F85ED))
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    NavigationDrawerItem(
+        label = { Text("Profile", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White) },
+        selected = false,
+        onClick = { navController.navigate(Screen.Profile.route) },
+        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color(0xFF7F85ED))
     )
 
     Spacer(modifier = Modifier.height(4.dp))
 
     NavigationDrawerItem(
-        label = {
-            Text(
-                text = "My Dictionary",
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp,
-            )
-        },
+        label = { Text("My Dictionary", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White) },
         selected = false,
-        onClick = {},
-        colors = NavigationDrawerItemDefaults.colors(
-            unselectedContainerColor = Color(0xFF7F85ED),
-            selectedContainerColor = Color(0xFF7F85ED)
-        )
+        onClick = { navController.navigate(Screen.Dictionary.route) },
+        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color(0xFF7F85ED))
     )
 
     Spacer(modifier = Modifier.height(4.dp))
 
     NavigationDrawerItem(
-        label = {
-            Text(
-                modifier = Modifier.padding(top = 5.dp),
-                text = "Start Lesson",
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp
-            )
-        },
+        label = { Text("Start Lesson", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White) },
         selected = false,
-        onClick = {},
-        colors = NavigationDrawerItemDefaults.colors(
-            unselectedContainerColor = Color(0xFF7F85ED),
-            selectedContainerColor = Color(0xFF7F85ED)
-        )
+        onClick = { navController.navigate(Screen.Lesson.route) },
+        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color(0xFF7F85ED))
     )
 
     Spacer(modifier = Modifier.height(4.dp))
 
     NavigationDrawerItem(
-        label = {
-            Text(
-                text = "Read Text",
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 20.sp,
-            )
-        },
+        label = { Text("Read Text", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White) },
         selected = false,
-        onClick = {},
-        colors = NavigationDrawerItemDefaults.colors(
-            unselectedContainerColor = Color(0xFF7F85ED),
-            selectedContainerColor = Color(0xFF7F85ED)
-        )
+        onClick = { navController.navigate(Screen.ReadText.route) },
+        colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color(0xFF7F85ED))
     )
 
     Spacer(modifier = Modifier.height(4.dp))
