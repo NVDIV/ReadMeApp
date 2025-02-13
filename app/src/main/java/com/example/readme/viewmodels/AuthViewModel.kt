@@ -83,4 +83,11 @@ class AuthViewModel : ViewModel() {
             null
         }
     }
+
+    suspend fun getUserLevelAndInterests(): Pair<String, List<String>>? {
+        val userProfile = getUserProfile() ?: return null
+        val level = userProfile["level"] as? String ?: return null
+        val interests = userProfile["interests"] as? List<String> ?: emptyList()
+        return Pair(level, interests)
+    }
 }
