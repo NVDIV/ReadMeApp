@@ -17,6 +17,8 @@ class ChatGptViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private val _response = MutableStateFlow<String>("")
     val response: StateFlow<String> = _response
+    private val _dictionaryWords = MutableStateFlow<List<Pair<String, String>>>(emptyList())
+    val dictionaryWords: StateFlow<List<Pair<String, String>>> = _dictionaryWords
 
     fun generateText(interests: List<String>, level: String) {
         val interestString = interests.joinToString(", ")
@@ -99,6 +101,32 @@ class ChatGptViewModel : ViewModel() {
 
         } catch (e: Exception) {
             Log.e("ChatGptViewModel", "Failed to add word to dictionary: ${e.message}")
+        }
+    }
+
+    fun fetchDictionaryWords() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            Log.e("ChatGptViewModel", "No user is logged in.")
+            return
+        }
+
+        val userId = currentUser.uid
+        val dictionaryRef = firestore.collection("users").document(userId).collection("dictionary")
+
+        viewModelScope.launch {
+            try {
+                val snapshot = dictionaryRef.orderBy("timestamp").get().await()
+                val wordsList = snapshot.documents.mapNotNull { doc ->
+                    val originalWord = doc.getString("originalWord") ?: return@mapNotNull null
+                    val translatedWord = doc.getString("translatedWord") ?: return@mapNotNull null
+                    Pair(originalWord, translatedWord)
+                }
+                _dictionaryWords.value = wordsList
+                Log.d("ChatGptViewModel", "Fetched ${wordsList.size} words from dictionary.")
+            } catch (e: Exception) {
+                Log.e("ChatGptViewModel", "Error fetching dictionary words: ${e.message}")
+            }
         }
     }
 }
