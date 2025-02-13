@@ -24,6 +24,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun LessonScreen(navController: NavHostController, ) {
     DrawerLayout(navController) { modifier ->
-        ProfileScreenContent(modifier) // Pass padding modifier
+//        ProfileScreenContent(modifier) // Pass padding modifier
     }
 }

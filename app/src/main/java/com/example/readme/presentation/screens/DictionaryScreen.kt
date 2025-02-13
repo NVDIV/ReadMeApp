@@ -9,6 +9,6 @@ fun DictionaryScreen(
     navController: NavHostController,
 ) {
     DrawerLayout(navController) { modifier ->
-        ProfileScreenContent(modifier) // Pass padding modifier
+//        ProfileScreenContent(modifier) // Pass padding modifier
     }
 }
