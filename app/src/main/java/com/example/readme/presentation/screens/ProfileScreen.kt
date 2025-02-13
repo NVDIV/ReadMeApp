@@ -6,7 +6,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.widget.Toast
@@ -22,11 +21,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.readme.broadcast.Notification
 import com.example.readme.broadcast.channelID
+import com.example.readme.presentation.components.ActionButton
 import com.example.readme.presentation.components.DrawerLayout
 import com.example.readme.presentation.viewmodels.AuthViewModel
 import kotlinx.coroutines.launch
@@ -95,19 +94,10 @@ fun ProfileScreenContent(
                 }
             } ?: Text("Failed to load profile data.")
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(onClick = onSignOut) {
-            Text("Sign Out")
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
 
         // Button to Set Notification
-        Button(onClick = { timePickerDialog.value = true }) {
-            Text("Set Daily Notification")
-        }
+        ActionButton(text = "Set Daily Notification", onClick = { timePickerDialog.value = true })
 
         selectedTime.value?.let { (hour, minute) ->
             Text("Notification set for: %02d:%02d".format(hour, minute))
@@ -124,10 +114,14 @@ fun ProfileScreenContent(
             )
             timePickerDialog.value = false
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ActionButton("Sign Out", onClick = onSignOut)
     }
 }
 
-// ✅ FIXED: Notification Scheduling
+// Notification Scheduling
 @SuppressLint("ServiceCast", "ScheduleExactAlarm")
 private fun scheduleNotification(context: Context, hour: Int, minute: Int) {
     val intent = Intent(context, Notification::class.java)
@@ -152,7 +146,7 @@ private fun scheduleNotification(context: Context, hour: Int, minute: Int) {
     )
 }
 
-// ✅ FIXED: Notification Channel
+// Notification Channel
 private fun createNotificationChannel(context: Context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val name = "Daily Notification"
@@ -166,7 +160,7 @@ private fun createNotificationChannel(context: Context) {
     }
 }
 
-// ✅ FIXED: TimePicker Dialog in Compose
+// TimePicker Dialog
 fun TimePickerDialog(context: Context, onTimeSelected: (Int, Int) -> Unit) {
     val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR_OF_DAY)

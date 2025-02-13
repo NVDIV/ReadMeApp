@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,11 +21,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.readme.presentation.components.ActionButton
 import com.example.readme.presentation.components.DrawerLayout
 import com.example.readme.presentation.viewmodels.AuthViewModel
 import com.example.readme.viewmodels.ChatGptViewModel
@@ -37,7 +34,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ReadTextScreen(navController: NavHostController, ) {
     DrawerLayout(navController) { modifier ->
-        ReadTextScreenContent(modifier) // Pass padding modifier
+        ReadTextScreenContent(modifier)
     }
 }
 
@@ -63,9 +60,7 @@ fun ReadTextScreenContent(modifier: Modifier) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Button(onClick = { chatGptViewModel.generateText(interests, level) }) {
-            Text("Generate")
-        }
+        ActionButton("Generate", onClick = { chatGptViewModel.generateText(interests, level) })
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -83,13 +78,11 @@ fun ReadTextScreenContent(modifier: Modifier) {
 
         selectedWord?.let { word ->
             Text("Selected word: $word", style = TextStyle(fontSize = 16.sp))
-            Button(onClick = {
+            ActionButton("Add to Dictionary", onClick = {
                 coroutineScope.launch {
                     chatGptViewModel.addWordToDictionary(word)
                 }
-            }) {
-                Text("Add to Dictionary")
-            }
+            })
         }
     }
 }

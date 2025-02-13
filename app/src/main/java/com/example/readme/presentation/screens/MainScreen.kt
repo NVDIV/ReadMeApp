@@ -2,17 +2,18 @@ package com.example.readme.presentation.screens
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -20,21 +21,18 @@ import androidx.navigation.NavHostController
 import com.example.readme.R
 import com.example.readme.presentation.components.ActionButton
 import com.example.readme.presentation.components.DrawerLayout
-import com.example.readme.viewmodels.MainViewModel
 
 @Composable
 fun MainScreen(
-    navController: NavHostController,
-    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    navController: NavHostController
+) {
     DrawerLayout(navController) { modifier ->
-        MainScreenContent(modifier) // Pass padding modifier
+        MainScreenContent(modifier, navController) // Pass padding modifier
     }
 }
 
 @Composable
-fun MainScreenContent(modifier: Modifier = Modifier) {
-    val isDarkTheme = isSystemInDarkTheme()
-    val textColor = if (isDarkTheme) Color.White else Color.Black
+fun MainScreenContent(modifier: Modifier = Modifier, navController: NavHostController) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -46,11 +44,11 @@ fun MainScreenContent(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-//            TextMessage(
-//                message = "Hello, $userName! Welcome to Readme",
-//                highlights = listOf(userName),
-//                textColor = textColor
-//            )
+            Text(
+                text = "Hello! Welcome to Readme!",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
 
             Spacer(modifier = Modifier.height(50.dp))
 
@@ -62,9 +60,9 @@ fun MainScreenContent(modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(50.dp))
             }
 
-            ActionButton(text = "Start Lesson", onClick = { /* TODO */ })
+            ActionButton(text = "Start Lesson", onClick = { navController.navigate("lesson_screen") })
             Spacer(modifier = Modifier.height(8.dp))
-            ActionButton(text = "Read Text", onClick = { /* TODO */ })
+            ActionButton(text = "Read Text", onClick = { navController.navigate("read_text_screen") })
         }
     }
 }

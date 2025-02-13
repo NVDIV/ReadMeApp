@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,10 +65,12 @@ fun DictionaryScreenContent(modifier: Modifier) {
         } else if (words.value.isEmpty()) {
             Text(text = "No words found in your dictionary.")
         } else {
-            words.value.forEach { wordEntry ->
-                val originalWord = wordEntry["originalWord"] as? String ?: "N/A"
-                val translatedWord = wordEntry["translatedWord"] as? String ?: "N/A"
-                WordItem(originalWord, translatedWord)
+            LazyColumn {
+                items(words.value) { wordEntry ->
+                    val originalWord = wordEntry["originalWord"] as? String ?: "N/A"
+                    val translatedWord = wordEntry["translatedWord"] as? String ?: "N/A"
+                    WordItem(originalWord, translatedWord)
+                }
             }
         }
     }

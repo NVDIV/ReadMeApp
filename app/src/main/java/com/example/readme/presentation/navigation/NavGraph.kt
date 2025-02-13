@@ -21,8 +21,10 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun NavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Screen.Auth.route) {
+fun NavGraph(navController: NavHostController, isLoggedIn: Boolean) {
+    val startDestination = if (isLoggedIn) Screen.Main.route else Screen.Auth.route
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.Main.route) { MainScreen(navController) }
         composable(Screen.Profile.route) { ProfileScreen(navController) }
         composable(Screen.Dictionary.route) { DictionaryScreen(navController) }
@@ -31,4 +33,5 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.Auth.route) { AuthScreen(navController) }
     }
 }
+
 

@@ -23,13 +23,14 @@ class ChatGptViewModel : ViewModel() {
     fun generateText(interests: List<String>, level: String) {
         val interestString = interests.joinToString(", ")
         val prompt = """
-        Generate a short text for an English learner. The text should:
+        Generate a short text (100 words) for an English learner. The text should:
         - Be suitable for a $level-level learner (beginner, intermediate, advanced).
         - Focus on the following interests: $interestString.
         Make it engaging and educational.
     """.trimIndent()
 
         viewModelScope.launch {
+            _response.value = "" // Clear previous text
             try {
                 val request = ChatRequest(
                     model = "gpt-3.5-turbo",
@@ -44,7 +45,7 @@ class ChatGptViewModel : ViewModel() {
     }
 
     suspend fun translateWord(word: String): String? {
-        val prompt = "Translate the following word into polish:\n\n$word"
+        val prompt = "Translate the following word into polish:$word"
 
             return try {
                 val request = ChatRequest(
